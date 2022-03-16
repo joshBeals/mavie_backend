@@ -17,3 +17,11 @@ exports.loginValidation = (data) => {
     });
     return schema.validate(data);
 };
+
+exports.noteValidation = (data) => {
+    const schema = Joi.object({
+        title: Joi.string().required(),
+        content: Joi.string().required()
+    });
+    return schema.validate(data);
+}

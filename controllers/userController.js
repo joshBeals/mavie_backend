@@ -1,10 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { registerValidation, loginValidation } = require('../validation');
+const { registerValidation, loginValidation } = require('../Helpers/validation');
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
 
+    //Validate Request
     const { error } = registerValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     
@@ -22,15 +23,23 @@ exports.register = async (req, res, next) => {
         email: req.body.email,
         password: hashPassword
     });
+    
     try{
         const savedUSer = await user.save();
-        res.send(savedUSer);
+        res.send({
+            success: true,
+            message: "Registration Successful",
+            data: savedUSer
+        });
     }catch(err){
-        res.status(400).send(err);
+        res.status(400).send({
+            success: false,
+            errorMessage: err
+        });
     }
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
 
     const { error } = loginValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -38,16 +47,48 @@ exports.login = async (req, res, next) => {
     try{
         //Check if email exists
         const user =  await User.findOne({email: req.body.email});
-        if(!user) return res.status(400).send('Invalid login details');
+        if(!user) return res.status(400).send({
+            success: false,
+            errorMessage: "Invalid Login Details"
+        });;
 
         //Check if password is correct
         const validPass = await bcrypt.compare(req.body.password, user.password);
-        if(!validPass) return res.status(400).send('Invalid login details');
+        if(!validPass) return res.status(400).send({
+            success: false,
+            errorMessage: "Invalid Login Details"
+        });;
 
         const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-        res.header('auth-token', token).send(token);
+        res.status(200).header('auth-token', token).send({
+            success: true,
+            message: "Login Successful",
+            token: token
+        });
         
     }catch(err){
-        res.status(400).send(err);
+        res.status(400).send({
+            success: false,
+            errorMessage: err
+        });
     }
+
+}
+
+exports.getUser = async (req, res) => {
+
+    try{
+        const user = await User.findById(req.user._id);
+        res.status(200).send({
+            success: true,
+            message: "User Gotten Successfully",
+            data: user
+        });
+    }catch(err){
+        res.status(400).send({
+            success: false,
+            errorMessage: err
+        });
+    }
+
 }
