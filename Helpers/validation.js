@@ -25,3 +25,10 @@ exports.noteValidation = (data) => {
     });
     return schema.validate(data);
 }
+
+exports.weightValidation = (data) => {
+    const schema = Joi.object({
+        weight: Joi.string().required()
+    });
+    return schema.validate(data);
+}

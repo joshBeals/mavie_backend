@@ -56,6 +56,23 @@ exports.editNote = async (req, res) => {
 
 }
 
+exports.deleteNote = async (req, res) => {
+
+    try{
+        await Note.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            success: true,
+            message: "Note deleted successfully"
+        });
+    }catch(err){
+        res.status(400).send({
+            success: false,
+            errorMessage: err
+        });
+    }
+
+}
+
 exports.getNotes = async (req, res) => {
 
     try{
