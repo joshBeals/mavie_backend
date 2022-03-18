@@ -13,9 +13,9 @@ const verifyToken = require('./middlewares/verifyToken');
 dotenv.config();
 
 //connect to DB
-mongoose.connect(process.env.DB_CONNECT, () => {
-    console.log('Connected to DB!');
-});
+mongoose.connect(process.env.DB_CONNECT)
+.then(() => console.log('DB Connection Successful!'))
+.catch((err) => console.log(err));
 
 //Middlewares
 app.use(express.json());
