@@ -47,14 +47,14 @@ exports.login = async (req, res) => {
     try{
         //Check if email exists
         const user =  await User.findOne({email: req.body.email});
-        if(!user) return res.status(400).send({
+        if(!user) return res.status(401).send({
             success: false,
             errorMessage: "Invalid Login Details"
         });;
 
         //Check if password is correct
         const validPass = await bcrypt.compare(req.body.password, user.password);
-        if(!validPass) return res.status(400).send({
+        if(!validPass) return res.status(401).send({
             success: false,
             errorMessage: "Invalid Login Details"
         });;
