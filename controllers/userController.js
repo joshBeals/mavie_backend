@@ -7,7 +7,10 @@ exports.register = async (req, res) => {
 
     //Validate Request
     const { error } = registerValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send({
+        success: false,
+        errorMessage: error.details[0].message
+    });
     
     //Check if email exists
     const emailExixts =  await User.findOne({email: req.body.email});
@@ -42,7 +45,10 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
 
     const { error } = loginValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send({
+        success: false,
+        errorMessage: error.details[0].message
+    });
 
     try{
         //Check if email exists
@@ -50,7 +56,7 @@ exports.login = async (req, res) => {
         if(!user) return res.status(401).send({
             success: false,
             errorMessage: "Invalid Login Details"
-        });;
+        });
 
         //Check if password is correct
         const validPass = await bcrypt.compare(req.body.password, user.password);

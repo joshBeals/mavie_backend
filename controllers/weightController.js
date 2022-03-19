@@ -5,7 +5,10 @@ exports.addWeight = async (req, res) => {
     
     //Validate Request
     const { error } = noteValidation(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send({
+        success: false,
+        errorMessage: error.details[0].message
+    });
 
     // Create New Note
     weight = new Weight({
