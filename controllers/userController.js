@@ -63,7 +63,10 @@ exports.login = async (req, res) => {
         res.status(200).header('auth-token', token).send({
             success: true,
             message: "Login Successful",
-            token: token
+            data: {
+                token: token,
+                user: user
+            }
         });
         
     }catch(err){
