@@ -82,7 +82,7 @@ exports.deleteNote = async (req, res) => {
 exports.getNotes = async (req, res) => {
 
     try{
-        const notes = await Note.find({ user_id: req.user._id });
+        const notes = await Note.find({ user_id: req.user._id }).sort([['created_at', -1]]);
         res.status(200).send({
             success: true,
             message: "Notes Gotten Successfully",
