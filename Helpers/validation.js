@@ -32,3 +32,11 @@ exports.weightValidation = (data) => {
     });
     return schema.validate(data);
 }
+
+exports.memoryValidation = (data) => {
+    const schema = Joi.object({
+        img_path: Joi.string().required(),
+        description: Joi.string().required()
+    });
+    return schema.validate(data);
+}
