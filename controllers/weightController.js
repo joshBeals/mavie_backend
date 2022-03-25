@@ -52,7 +52,7 @@ exports.deleteWeight = async (req, res) => {
 exports.getWeights = async (req, res) => {
 
     try{
-        const weights = await Weight.find({ user_id: req.user._id }).sort([['created_at', 1]]);
+        const weights = await Weight.find({ user_id: req.user._id }).sort([['created_at', -1]]);
         res.status(200).send({
             success: true,
             message: "Weights Gotten Successfully",
