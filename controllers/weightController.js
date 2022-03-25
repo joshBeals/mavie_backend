@@ -4,7 +4,7 @@ const { weightValidation } = require('../Helpers/validation');
 exports.addWeight = async (req, res) => {
     
     //Validate Request
-    const { error } = noteValidation(req.body);
+    const { error } = weightValidation(req.body);
     if (error) return res.status(400).send({
         success: false,
         errorMessage: error.details[0].message
