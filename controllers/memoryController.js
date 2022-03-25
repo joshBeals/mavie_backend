@@ -59,7 +59,7 @@ exports.deleteMemory = async (req, res) => {
 exports.getMemories = async (req, res) => {
 
     try{
-        const memories = await Memory.find({ user_id: req.user._id });
+        const memories = await Memory.find({ user_id: req.user._id }).sort([['created_at', -1]]);
         res.status(200).send({
             success: true,
             message: "Memory Gotten Successfully",
