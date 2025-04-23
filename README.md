@@ -4,7 +4,7 @@ This is the backend powering the mavie app
 
 ## Backend Architecture
 
-REST
+RESTful 
 
 ## Backend Tools
 
